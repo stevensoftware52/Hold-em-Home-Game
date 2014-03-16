@@ -31,6 +31,8 @@ void Slider::Input()
 	float fMinValue = GetMinValue();
 	float fMaxValue = GetMaxValue();
 
+	float fBefore = m_fCurrentNumber;
+
 	if (m_minusButton->ButtonPressed())
 		m_fCurrentNumber -= g_gameInfo.m_fBigBlind;
 	else if (m_plusButton->ButtonPressed())
@@ -50,9 +52,12 @@ void Slider::Input()
 
 	// Update input box text
 
-	char str[24];
-	sprintf_s(str, "%.2f", m_fCurrentNumber);
-	g_tableRender.setMsg(str);
+	if (m_fCurrentNumber != fBefore)
+	{
+		char str[24];
+		sprintf_s(str, "%.2f", m_fCurrentNumber);
+		g_tableRender.setMsg(str);
+	}
 }
 
 // ---------
@@ -74,7 +79,14 @@ void Slider::Render()
 		}
 
 		// If they let go of the mouse
+
 		m_bHolding = _hge->Input_GetKeyState(HGEK_LBUTTON);
+		
+		// Update input box text
+
+		char str[24];
+		sprintf_s(str, "%.2f", m_fCurrentNumber);
+		g_tableRender.setMsg(str);
 	}
 
 	// Slider bar
