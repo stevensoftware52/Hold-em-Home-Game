@@ -422,7 +422,7 @@ unsigned int CardDeck::CalculateHandStrength(std::vector<Card> cards, std::strin
 			vValues.push_back(cards[i].uiValue);
 
 		// Get best 5 cards
-		for (int v = 5; v >= 0; --v)
+		for (int v = 4; v >= 0; --v)
 		{
 			auto itr = std::max_element(vValues.begin(), vValues.end());
 			highcardVal += *itr;
