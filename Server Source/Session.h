@@ -25,7 +25,9 @@ enum OpCodes
 	OPCODE_HAND_DEAL,
 	OPCODE_HAND_NEWCARD,
 	OPCODE_HAND_FLOP,
-	OPCODE_HAND_TIMEBANK
+	OPCODE_HAND_TIMEBANK,
+	
+	OPCODE_POT_COLLECTOR
 };
 
 enum ChatTypes
@@ -69,8 +71,10 @@ class Session
 		
 		unsigned int BuildPlayerInfo(char* buffer);
 		unsigned int BuildSendTaunt(char* buffer);
+
 		static unsigned int BuildPlayerCardInfo(char* buffer, unsigned int accountId, std::vector<Card> cards);
-		static unsigned int BuildChatMsg(char* buffer, std::string msg, uint8 type);		
+		static unsigned int BuildChatMsg(char* buffer, std::string msg, uint8 type);	
+		static unsigned int BuildPotWinner(char* buffer, unsigned int accountId, PENNY amount);
 		
 		// Recv OPCODE's
 		//

@@ -549,7 +549,11 @@ void Game::AwardPot(std::vector<Player*> vWinners)
 
 		vWinners[i]->penStack += iAmountToExtract;
 
-		BroadcastF("%s collected $%.2f from pot", vWinners[i]->name.c_str(), float(iAmountToExtract) / 100.0f);
+		if (iAmountToExtract)
+		{
+			BroadcastF("%s collected $%.2f from pot", vWinners[i]->name.c_str(), PENNY_F(iAmountToExtract));			
+			g_gameFloor.BroadcastPacket(m_gameBuffer, Session::BuildPotWinner(m_gameBuffer, vWinners[i]->accountId, iAmountToExtract));
+		}
 	}
 
 	m_penPot = potInPennies;

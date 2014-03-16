@@ -35,7 +35,9 @@ enum OpCodes
 	OPCODE_HAND_DEAL,
 	OPCODE_HAND_NEWCARD,
 	OPCODE_HAND_FLOP,
-	OPCODE_HAND_TIMEBANK
+	OPCODE_HAND_TIMEBANK,
+	
+	OPCODE_POT_COLLECTOR,
 };
 
 struct Packet
@@ -96,6 +98,7 @@ class TcpClient
 		void ReceiveHandOpcode(char* data, uint8 opcode);
 		void ReceivePlayerTaunt(char* data, unsigned int msgSize);
 		void ReceivePlayMusic(char* data, unsigned int msgSize);
+		void ReceivePotCollector(char* data, unsigned int msgSize);
 
 	private:
         HANDLE m_mutex;

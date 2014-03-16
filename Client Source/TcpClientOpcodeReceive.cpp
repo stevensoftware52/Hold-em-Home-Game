@@ -341,3 +341,19 @@ void TcpClient::ReceivePlayMusic(char* data, unsigned int size)
 {
 	g_tableRender.ToggleMusic(true);
 }
+
+// -------------------------
+// ReceivePotCollector
+void TcpClient::ReceivePotCollector(char* data, unsigned int size)
+{
+	unsigned int sizeUnpacked = 0;
+
+	// AccountID (unsigned short)
+	unsigned short playerGUID = UNPACK_UINT16;
+
+	// Amount (float)
+	float fAmount = UNPACK_FLOAT;
+
+	// Queue it!
+	g_gameInfo.m_winnerAnimations.push_back(WinnerAnimation(fAmount, playerGUID));
+}

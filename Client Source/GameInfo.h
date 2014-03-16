@@ -31,6 +31,16 @@ struct CardAnimations
 	std::vector<CardAnimation> vCardAnimations;
 };
 
+struct WinnerAnimation
+{
+	WinnerAnimation() {};
+	WinnerAnimation(float a, unsigned int g) : fAmount(a), guid(g), progress(-1.0f) {}
+
+	float fAmount;
+	float progress;
+	unsigned int guid;
+};
+
 class GameInfo
 {
 	public:
@@ -45,7 +55,7 @@ class GameInfo
 		
 		void Update();
 		void RenderText();
-		void PumpDrawCardAnimation();
+		void PumpAnimations();
 
 		void clearPlayerCards() { m_playerCards.clear(); }
 		
@@ -79,8 +89,10 @@ class GameInfo
 		unsigned short m_uiGUID;
 
 		std::vector<PlayerCards> m_playerCards;
-		std::vector<std::string> m_buttonOptions;
 		std::vector<PlayerTaunts> m_playerTaunts;
+		std::vector<WinnerAnimation> m_winnerAnimations;
+
+		std::vector<std::string> m_buttonOptions;
 
 		CardAnimations m_cardAnimations;
 };

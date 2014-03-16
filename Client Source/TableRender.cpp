@@ -287,7 +287,7 @@ void TableRender::SetMsg(std::string msg)
 // -----------------
 // RenderChipStack
 //		If seat is >= MAX_PLAYERS then it's rendering the pot
-void TableRender::RenderChipStack(float amount, uint8 seat)
+void TableRender::RenderChipStack(float amount, uint8 seat, Vector2 renderOverride)
 {
 	bool bIsThePot = seat >= MAX_PLAYERS;
 	float betAmount = amount;
@@ -319,6 +319,11 @@ void TableRender::RenderChipStack(float amount, uint8 seat)
 		originPos = BET_RENDER_V(seat);
 
 	Vector2 renderPos = originPos;
+
+	// Use renderOverride if exists
+
+	if (renderOverride.x)
+		renderPos = renderOverride;
 	
 	float chipVisualSize = 0.0f;
 

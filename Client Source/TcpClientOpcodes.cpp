@@ -8,7 +8,7 @@ void TcpClient::ProcessPacket(Packet* packet)
     uint8 opcode = *(uint8 *)(packet->data); 
 	unsigned int msgSize = packet->dataSize - sizeof(opcode);
     char *furtherData = packet->data + sizeof(opcode);
-
+	
 	switch (opcode)
 	{
 		case OPCODE_NULL: break;
@@ -19,6 +19,7 @@ void TcpClient::ProcessPacket(Packet* packet)
 		case OPCODE_PLAYER_CARDS: ReceivePlayerCards(furtherData, msgSize); break;
 		case OPCODE_PLAYER_TAUNTS: ReceivePlayerTaunt(furtherData, msgSize); break;
 		case OPCODE_PLAYER_PLAYMUSIC: ReceivePlayMusic(furtherData, msgSize); break;
+		case OPCODE_POT_COLLECTOR: ReceivePotCollector(furtherData, msgSize); break;
 
 		case OPCODE_HAND_OVER: 
 		case OPCODE_HAND_CHIP:

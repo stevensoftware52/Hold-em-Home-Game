@@ -149,7 +149,7 @@ class TableRender : InputBox
 		void ResetBoard();
 		void AddBoardCard(ClientCard* pCard);
 		void ToggleMusic(bool bOn);
-		void RenderChipStack(float amount, uint8 seat);
+		void RenderChipStack(float amount, uint8 seat, Vector2 renderOverride = Vector2());
 		void SetMsg(std::string msg);
 
 		void setPot(float pot) { m_pot = pot; }

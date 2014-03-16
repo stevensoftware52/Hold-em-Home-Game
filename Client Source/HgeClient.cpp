@@ -117,7 +117,7 @@ bool HgeClient::RenderFunc()
 		g_gameInfo.RenderText();
 
 		// Gameinfo animtions
-		g_gameInfo.PumpDrawCardAnimation();
+		g_gameInfo.PumpAnimations();
 	}	
 
 	_hge->Gfx_EndScene();

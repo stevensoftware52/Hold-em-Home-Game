@@ -19,6 +19,24 @@ unsigned int Session::BuildChatMsg(char* buffer, std::string msg, uint8 type)
 	return bufferSize;
 }
 
+// ----------------------------
+// BuildPotWinner
+unsigned int Session::BuildPotWinner(char* buffer, unsigned int accountId, PENNY amount)
+{
+	unsigned int bufferSize = 0;
+
+	// Opcode (uint8)
+	bufferSize += Util::bufferAddUINT8(ONTO_BUFFER, OPCODE_POT_COLLECTOR);
+
+	// AccountID (unsigned short)
+	bufferSize += Util::bufferAddUShort(ONTO_BUFFER, accountId);
+
+	// Amount (float)
+	bufferSize += Util::bufferAddFloat(ONTO_BUFFER, PENNY_F(amount));
+
+	return bufferSize;
+}
+
 // ---------------------
 // BuildSendTaunt
 unsigned int Session::BuildSendTaunt(char* buffer)

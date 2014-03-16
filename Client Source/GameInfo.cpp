@@ -43,41 +43,108 @@ void GameInfo::RenderText()
 }
 
 // ------------------------
-// PumpDrawCardAnimation
-void GameInfo::PumpDrawCardAnimation()
+// PumpAnimations
+void GameInfo::PumpAnimations()
 {
-	auto itr = m_cardAnimations.vCardAnimations.begin();
+	// Card animations
+	//
 
-	while (itr != m_cardAnimations.vCardAnimations.end())
 	{
-		(*itr).progression += _hge->Timer_GetDelta() * 3.0f;
+		auto itr = m_cardAnimations.vCardAnimations.begin();
 
-		if ((*itr).progression > 1.0f)
+		while (itr != m_cardAnimations.vCardAnimations.end())
 		{
-			itr = m_cardAnimations.vCardAnimations.erase(itr);
-		}
-		else
-		{
-			CardAnimation cA = (*itr);
+			(*itr).progression += _hge->Timer_GetDelta() * 3.0f;
 
-			// Render based on percent distance to endPos
-			if (cA.progression >= 0.0f)
+			if ((*itr).progression > 1.0f)
 			{
-				float distFromOrigin = Util::dist(cA.startPos, cA.endPos);
-
-				// Our visual position is extruded from origin to endPos
-				Vector2 renderPos = Util::extrude(cA.startPos.x, cA.startPos.y, cA.endPos.x, cA.endPos.y, distFromOrigin * cA.progression);
-				
-				// Render it
-				if (hgeSprite* pSprite = g_hgeClient.sprite("holding.png"))
-				{
-					float scale = HOLDING_ICON_SCALE(pSprite);	
-					CENTER_SPRITE_HOTSPOT(pSprite);
-					pSprite->RenderEx(renderPos.x, renderPos.y, 0.0f, scale, scale);
-				}
+				itr = m_cardAnimations.vCardAnimations.erase(itr);
 			}
+			else
+			{
+				CardAnimation cA = (*itr);
 
-			++itr;
+				// Render based on percent distance to endPos
+				if (cA.progression >= 0.0f)
+				{
+					float distFromOrigin = Util::dist(cA.startPos, cA.endPos);
+
+					// Our visual position is extruded from origin to endPos
+					Vector2 renderPos = Util::extrude(cA.startPos.x, cA.startPos.y, cA.endPos.x, cA.endPos.y, distFromOrigin * cA.progression);
+				
+					// Render it
+					if (hgeSprite* pSprite = g_hgeClient.sprite("holding.png"))
+					{
+						float scale = HOLDING_ICON_SCALE(pSprite);	
+						CENTER_SPRITE_HOTSPOT(pSprite);
+						pSprite->RenderEx(renderPos.x, renderPos.y, 0.0f, scale, scale);
+					}
+				}
+
+				++itr;
+			}
 		}
 	}
+
+	// Winner animations
+	//
+
+	{
+		auto itr = m_winnerAnimations.begin();
+
+		while (itr != m_winnerAnimations.end())
+		{
+			// Play chip sound once it starts moving
+
+			bool bPlaySound = (*itr).progress < 0;
+
+			(*itr).progress += _hge->Timer_GetDelta() * 2.0f;
+			
+			if (bPlaySound && (*itr).progress >= 0)
+				g_hgeClient.ToggleSound("pot.wav", true);
+
+			// Done at > 1.0f
+
+			if ((*itr).progress > 4.0f)
+			{
+				itr = m_winnerAnimations.erase(itr);
+			}
+			
+			// Render
+
+			else
+			{
+				WinnerAnimation wA = *itr;
+				
+				// Sit in the middle until progress >= 0
+
+				if (wA.progress < 0)
+					wA.progress = 0;
+
+				// Sit at player's ring until object is erased
+
+				if (wA.progress > 1.0f)
+					wA.progress = 1.0f;
+
+				// Render based on percent distance to endPos
+				{
+					if (Player* pPlayer = g_tableRender.GetPlayer(wA.guid))
+					{
+						Vector2 startPos(TABLE_CENTER_X, TABLE_CENTER_Y);
+						Vector2 endPos(BET_RENDER_V(pPlayer->getMySeat()));
+
+						float distFromOrigin = Util::dist(startPos, endPos);
+
+						// Our visual position is extruded from origin to endPos
+						Vector2 renderPos = Util::extrude(startPos.x, startPos.y, endPos.x, endPos.y, distFromOrigin * wA.progress);
+
+						// Render chips
+						g_tableRender.RenderChipStack(wA.fAmount, 0, renderPos);
+					}
+				}
+
+				++itr;
+			}
+		}
+}
 }
