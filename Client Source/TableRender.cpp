@@ -11,6 +11,7 @@ TableRender::TableRender() : InputBox(A_INPUTBOX_X - 60.0f, A_INPUTBOX_Y, HGETEX
 {
 	m_typedMsg = "5.00";
 
+	m_slider = new Slider();
 	m_musicButton = new Button(MUSIC_BUTTON_ANCHORA, MUSIC_BUTTON_ANCHORB);
 
 	for (unsigned int i = 0; i < NUM_BUTTONS; ++i)
@@ -26,6 +27,7 @@ TableRender::~TableRender()
 {
 	m_board.clear();
 	
+	delete m_slider;
 	delete m_musicButton;
 
 	for (unsigned int i = 0; i < NUM_BUTTONS; ++i)
@@ -159,7 +161,10 @@ void TableRender::Render()
 	//
 
 	if (IsSomethingToInput())
+	{
+		m_slider->Render();
 		InputBox::Render();
+	}
 
 	// Music button
 	//
@@ -192,7 +197,10 @@ void TableRender::InterfaceInput()
 	}	
 
 	if (IsSomethingToInput())
+	{
+		m_slider->Input();
 		InputBox::FocusLogic();
+	}
 }
 
 // --------------------

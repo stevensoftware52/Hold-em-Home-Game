@@ -40,6 +40,7 @@ class GameInfo
 			m_username = "Unknown";
 			m_uiGUID = 0;
 			m_uiSeatToAct = 0;
+			m_fBigBlind = 0.02f; // TODO: Get this from server
 		}
 		
 		void Update();
@@ -68,6 +69,7 @@ class GameInfo
 					return m_playerCards[i].cards;
 		}
 		
+		float m_fBigBlind;
 		float m_fBankroll;
 		
 		std::string m_username;

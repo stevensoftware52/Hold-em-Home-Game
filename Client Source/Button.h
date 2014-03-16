@@ -21,7 +21,7 @@ class Button
 		void Render();
 		void setPosition(Vector2 pos) { m_renderPos = pos; }
 
-		bool ButtonPressed() const;
+		bool ButtonPressed(bool bState = false) const;
 		bool MousingOver() const;
 
 	private:

@@ -311,7 +311,7 @@ void TcpClient::ReceivePlayerTaunt(char* data, unsigned int size)
 
 	PlayerTaunts taunt;
 
-	taunt.durationLeft = 2.5f;
+	taunt.durationLeft = 3.0f;
 	taunt.guid = playerGUID;
 
 	g_gameInfo.m_playerTaunts.push_back(taunt);

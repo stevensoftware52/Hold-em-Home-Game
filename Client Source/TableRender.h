@@ -117,8 +117,8 @@ static const char* g_buttonTitles[NUM_BUTTONS] =
 #define BUTTON_ANCHOR Vector2(SCREEN_WIDTH_F - Util::round(BUTTON_SPRITE_SIZE * 0.75f), SCREEN_HEIGHT_F - Util::round(BUTTON_SPRITE_SIZE * 0.75f))
 
 // Where the amount input box is rendered (based on the 177 x 48 texture)
-#define A_INPUTBOX_X (SCREEN_WIDTH_F - 177.0f)
-#define A_INPUTBOX_Y (SCREEN_HEIGHT_F - 150.0f)
+#define A_INPUTBOX_X (SCREEN_WIDTH_F - 150.0f)
+#define A_INPUTBOX_Y (SCREEN_HEIGHT_F - 140.0f)
 
 // How big the music button is
 #define MUSIC_BUTTON_SIZE 34.0f
@@ -133,6 +133,7 @@ static const char* g_buttonTitles[NUM_BUTTONS] =
 
 class Player;
 class Button;
+class Slider;
 
 class TableRender : InputBox
 {
@@ -204,6 +205,8 @@ class TableRender : InputBox
 
 		Button* m_musicButton;
 		Button* m_buttons[NUM_BUTTONS];
+
+		Slider* m_slider;
 
 		std::vector<ClientCard*> m_board;
 };

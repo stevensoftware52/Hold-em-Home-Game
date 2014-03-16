@@ -77,8 +77,9 @@ class Player
 		void setIsInHand(bool val) { m_bIsInHand = val; }
 
 		bool isInHand() const { return m_bIsInHand; }
-
+		
 		float getBet() const { return m_bet; }
+		float getMoney() const { return m_money; }
 		
 		unsigned int getGUID() const { return m_uiGUID; }
 		unsigned int getAvatar() const { return m_uiAvatar; }

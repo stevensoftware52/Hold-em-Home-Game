@@ -57,6 +57,7 @@ typedef unsigned char uint8;
 #include "LoginMenu.h"
 #include "Button.h"
 #include "GameInfo.h"
+#include  "Slider.h"
 
 extern HgeClient g_hgeClient;
 extern TableRender g_tableRender;

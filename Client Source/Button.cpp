@@ -24,9 +24,15 @@ void Button::Render()
 
 // -----------------
 // ButtonPressed
-bool Button::ButtonPressed() const
+bool Button::ButtonPressed(bool bState) const
 {
-	return _hge->Input_GetKey() == HGEK_LBUTTON && MousingOver();			
+	if (_hge->Input_GetKey() != HGEK_LBUTTON)
+	{
+		if (!bState || !_hge->Input_GetKeyState(HGEK_LBUTTON))
+			return false;
+	}
+
+	return MousingOver();			
 }
 
 // ---------------------
