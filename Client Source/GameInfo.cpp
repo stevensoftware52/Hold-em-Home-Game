@@ -27,12 +27,19 @@ void GameInfo::Update()
 void GameInfo::RenderText()
 {
 	uint8 myAvatar = 0;
+	
+	DWORD timeBank = 0;
+	DWORD decisionTime = 0;
 
 	if (Player* pPlayer = g_tableRender.GetPlayer(this->m_uiGUID))
-		myAvatar = pPlayer->getAvatar();
+	{
+		timeBank = pPlayer->m_timeBank;
+		decisionTime = pPlayer->m_decisionTime;
+	}
 
 	if (hgeFont* pFont = g_hgeClient.font("tahoma13b"))
-		pFont->printf(SCREEN_WIDTH_F - 15.0f, 15.0f, HGETEXT_RIGHT, "Username: %s\nNet Bankroll: $%.2f\nAvatar: %d", m_username.c_str(), m_fBankroll, myAvatar);
+		pFont->printf(SCREEN_WIDTH_F - 15.0f, 15.0f, HGETEXT_RIGHT, "Username: %s\nNet Bankroll: $%.2f\nAvatar: %d\nDecision Time: %d\nTime Bank: %d", 
+			m_username.c_str(), m_fBankroll, myAvatar, decisionTime, timeBank);
 }
 
 // ------------------------

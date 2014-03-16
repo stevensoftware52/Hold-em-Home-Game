@@ -72,6 +72,8 @@ void TcpClient::RecieveAllTableInformation(char* data, unsigned int size)
 		pPlayer->setBet(playerBet);
 		pPlayer->setHolding(playerHasHolding);
 		pPlayer->setIsInHand(playerInHand);
+		pPlayer->m_decisionTime = playerDecisionTime / 1000;
+		pPlayer->m_timeBank = playerTimeBank / 1000;
 
 		g_tableRender.AddPlayer(playerSeat, pPlayer);
 	}
@@ -293,6 +295,10 @@ void TcpClient::ReceiveHandOpcode(char* buffer, uint8 opcode)
 			g_gameInfo.m_cardAnimations.vCardAnimations.push_back(CardAnimation(dealerPosition, 0.0f, Vector2(TABLE_CENTER_X, TABLE_CENTER_Y)));
 			g_gameInfo.m_cardAnimations.vCardAnimations.push_back(CardAnimation(dealerPosition, 0.1f, Vector2(TABLE_CENTER_X, TABLE_CENTER_Y)));
 			g_gameInfo.m_cardAnimations.vCardAnimations.push_back(CardAnimation(dealerPosition, 0.2f, Vector2(TABLE_CENTER_X, TABLE_CENTER_Y)));
+			break;
+
+		case OPCODE_HAND_TIMEBANK:
+			playsound = "time_bank.wav";
 			break;
 	}
 

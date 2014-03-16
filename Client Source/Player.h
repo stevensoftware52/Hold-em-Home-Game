@@ -88,6 +88,9 @@ class Player
 
 		Vector2 GetAnchor() const;
 
+		DWORD m_timeBank;
+		DWORD m_decisionTime;
+
 	private:	
 		bool haveClientCards() const
 		{

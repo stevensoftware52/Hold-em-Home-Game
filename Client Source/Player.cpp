@@ -8,7 +8,9 @@ Player::Player(uint8 seat, std::string name, unsigned int guid, float money, uns
 	m_uiGUID(guid),
 	m_money(money),
 	m_uiAvatar(avatar),
-	m_bIsInHand(false)
+	m_bIsInHand(false),
+	m_timeBank(0),
+	m_decisionTime(0)
 {
 	for (unsigned int i = 0; i < MAX_HOLD_CARDS; ++i)
 		m_myCards[i] = 0;

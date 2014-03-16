@@ -28,6 +28,7 @@ void TcpClient::ProcessPacket(Packet* packet)
 		case OPCODE_HAND_DEAL:
 		case OPCODE_HAND_NEWCARD:	
 		case OPCODE_HAND_FLOP:	
+		case OPCODE_HAND_TIMEBANK:
 			ReceiveHandOpcode(furtherData, opcode); 
 			break;
 

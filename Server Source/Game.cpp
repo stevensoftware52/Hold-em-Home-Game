@@ -13,7 +13,7 @@ Game::Game(PENNY bigBlind, PENNY smallBlind)
 
 	m_uiUniqueHandCount = 0;
 
-	//AddPlayer("Computer1", 1, MAX_BUYIN);
+	AddPlayer("Computer1", 1, MAX_BUYIN);
 }
 
 // ----------
@@ -91,8 +91,20 @@ void Game::Update(unsigned int uiDiff)
 						m_seats[m_uiSeatToAct].pPlayer->dTimeBank -= (DWORD)uiDiff;
 				}
 				else
+				{
 					m_seats[m_uiSeatToAct].pPlayer->dDecisionTime -= (DWORD)uiDiff;
-			
+					
+					// Time JUST ran out
+					if (m_seats[m_uiSeatToAct].pPlayer->dDecisionTime <= uiDiff)
+					{		
+						if (Session* pSession = g_gameFloor.GetSession(m_seats[m_uiSeatToAct].pPlayer->accountId))
+							pSession->SendMessageTo(PackOpcode(m_gameBuffer, OPCODE_HAND_TIMEBANK), m_gameBuffer);
+
+						// Not let repeat
+						m_seats[m_uiSeatToAct].pPlayer->dDecisionTime = 0;
+					}
+				}
+
 				// DEBUG: Have AI check/call
 
 				if (m_seats[m_uiSeatToAct].pPlayer->accountId <= AI_GUID_MAX)
