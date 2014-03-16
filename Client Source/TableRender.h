@@ -152,6 +152,7 @@ class TableRender : InputBox
 
 		void setPot(float pot) { m_pot = pot; }
 		void setDealerSeat(uint8 seat) { m_dealerSeat = seat; }
+		void setMsg(std::string msg) { m_typedMsg = msg; }
 
 		bool playerFramePulse() const { return m_bPlayerFramePulse; }
 
@@ -181,6 +182,8 @@ class TableRender : InputBox
 		std::vector<ClientCard*> getBoard() const { return m_board; }
 
 	private:
+		bool IsSomethingToInput() const;
+
 		float m_tableX;
 		float m_tableY;
 		float m_tableHeight;

@@ -30,7 +30,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	else
 		printf("Missing file Console Logo.txt\n");
 
-	//g_tcpClient.AttemptConnection("g", "g");
 	g_hgeClient.Begin();
 
 	return 0;

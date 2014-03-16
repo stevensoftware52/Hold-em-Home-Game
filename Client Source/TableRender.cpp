@@ -9,7 +9,7 @@ TableRender::TableRender() : InputBox(A_INPUTBOX_X - 60.0f, A_INPUTBOX_Y, HGETEX
 	m_dealerSeat(2),
 	m_pot(0)
 {
-	m_typedMsg = "1.00";
+	m_typedMsg = "5.00";
 
 	m_musicButton = new Button(MUSIC_BUTTON_ANCHORA, MUSIC_BUTTON_ANCHORB);
 
@@ -57,6 +57,27 @@ void TableRender::Render()
 		pTable->RenderEx(m_tableX, m_tableY, 0.0f, m_tableScale, m_tableScale);
 	}
 
+	// Board
+	//
+
+	// Use the GameInfo image of the board if an animation is in progress
+	if (g_gameInfo.m_cardAnimations.vCardAnimations.size())
+		m_board = g_gameInfo.m_cardAnimations.vBoard;
+
+	for (unsigned int i = 0; i < m_board.size(); ++i)
+	{
+		if (hgeSprite* pSprite = m_board[i]->Sprite())
+		{
+			CENTER_SPRITE_HOTSPOT(pSprite);
+
+			float cardSize = CARD_RENDERED_SIZE(pSprite);			
+			float renderX = TABLE_CENTER_X - ((cardSize / 2.0f) * m_board.size()) + (cardSize * i) + (cardSize / 2.0f);
+			float renderY = TABLE_CENTER_Y;
+
+			pSprite->RenderEx(renderX, renderY, 0.0f, CARD_RENDER_SCALE(pSprite), CARD_RENDER_SCALE(pSprite));
+		}
+	}
+
 	// Players
 	//
 	
@@ -100,27 +121,6 @@ void TableRender::Render()
 		}
 	}
 
-	// Board
-	//
-
-	// Use the GameInfo image of the board if an animation is in progress
-	if (g_gameInfo.m_cardAnimations.vCardAnimations.size())
-		m_board = g_gameInfo.m_cardAnimations.vBoard;
-
-	for (unsigned int i = 0; i < m_board.size(); ++i)
-	{
-		if (hgeSprite* pSprite = m_board[i]->Sprite())
-		{
-			CENTER_SPRITE_HOTSPOT(pSprite);
-
-			float cardSize = CARD_RENDERED_SIZE(pSprite);			
-			float renderX = TABLE_CENTER_X - ((cardSize / 2.0f) * m_board.size()) + (cardSize * i) + (cardSize / 2.0f);
-			float renderY = TABLE_CENTER_Y;
-
-			pSprite->RenderEx(renderX, renderY, 0.0f, CARD_RENDER_SCALE(pSprite), CARD_RENDER_SCALE(pSprite));
-		}
-	}
-
 	// Pot
 	//
 	
@@ -131,9 +131,7 @@ void TableRender::Render()
 	//
 		
 	Vector2 buttonPos = BUTTON_ANCHOR;
-
-	//bool bRenderedAButton
-	
+		
 	for (unsigned int i = 0; i < NUM_BUTTONS; ++i)
 	{
 		if (!g_gameInfo.buttonIsOption(g_buttonTitles[i]))
@@ -148,16 +146,24 @@ void TableRender::Render()
 		buttonPos.x -= BUTTON_SPRITE_SIZE;
 	}
 
-	if (hgeSprite* pSprite = g_hgeClient.sprite("text_box.png"))
+	if (IsSomethingToInput())
 	{
-		CENTER_SPRITE_HOTSPOT(pSprite);
-		pSprite->Render(A_INPUTBOX_X, A_INPUTBOX_Y);
+		if (hgeSprite* pSprite = g_hgeClient.sprite("text_box.png"))
+		{
+			CENTER_SPRITE_HOTSPOT(pSprite);
+			pSprite->Render(A_INPUTBOX_X, A_INPUTBOX_Y);
+		}
 	}
 
-	// Always render the table input box
-	InputBox::Render();
+	// Input Box
+	//
+
+	if (IsSomethingToInput())
+		InputBox::Render();
 
 	// Music button
+	//
+
 	if (hgeSprite* pSprite = g_hgeClient.sprite("music_icon"))
 	{
 		if (m_bMusic)
@@ -183,9 +189,10 @@ void TableRender::InterfaceInput()
 	if (m_musicButton->ButtonPressed())
 	{
 		ToggleMusic(!m_bMusic);
-	}
+	}	
 
-	InputBox::FocusLogic();
+	if (IsSomethingToInput())
+		InputBox::FocusLogic();
 }
 
 // --------------------
@@ -391,4 +398,17 @@ Player* TableRender::GetPlayer(unsigned int guid) const
 		if (m_players[i] && m_players[i]->getGUID() == guid)
 			return m_players[i];
 	return 0;
+}
+
+// ---------------------
+// IsSomethingToInput
+bool TableRender::IsSomethingToInput() const
+{
+	bool bIsMyTurn = false;
+
+	if (Player* pPlayer = GetPlayer(g_gameInfo.m_uiGUID))
+		bIsMyTurn = pPlayer->isInHand() && pPlayer->getMySeat() == g_gameInfo.m_uiSeatToAct;
+
+	// We only have something to input if its our turn or we need to enter the amount to sit down for
+	return bIsMyTurn || find(g_gameInfo.m_buttonOptions.begin(), g_gameInfo.m_buttonOptions.end(), "Sit Down") != g_gameInfo.m_buttonOptions.end();
 }

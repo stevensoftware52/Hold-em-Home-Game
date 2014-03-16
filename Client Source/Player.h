@@ -83,6 +83,8 @@ class Player
 		unsigned int getGUID() const { return m_uiGUID; }
 		unsigned int getAvatar() const { return m_uiAvatar; }
 
+		uint8 getMySeat() const { return m_uiSeat; }
+
 		Vector2 GetAnchor() const;
 
 	private:	

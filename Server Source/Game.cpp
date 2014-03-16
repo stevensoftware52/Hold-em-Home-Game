@@ -51,7 +51,7 @@ void Game::Update(unsigned int uiDiff)
 		{
 			++m_uiCurrentStage;
 			g_gameFloor.BroadcastPacket(m_gameBuffer, PackOpcode(m_gameBuffer, OPCODE_HAND_DEAL));
-			m_uiStageTimer = 750;
+			m_uiStageTimer = 250;
 			break;
 		}
 
@@ -96,7 +96,7 @@ void Game::Update(unsigned int uiDiff)
 				if (m_seats[m_uiSeatToAct].pPlayer->accountId <= AI_GUID_MAX)
 				{
 					if (m_uiCurrentStage > PREFLOP)
-						ProcessPlayerDecision(m_seats[m_uiSeatToAct].pPlayer->accountId, "Bet/Raise", 5);
+						ProcessPlayerDecision(m_seats[m_uiSeatToAct].pPlayer->accountId, "All In");
 					else
 						ProcessPlayerDecision(m_seats[m_uiSeatToAct].pPlayer->accountId, "Check");
 						
@@ -464,18 +464,21 @@ void Game::AwardWinners()
 					// During the second loop anyone with that hand is a winner
 					if (r > 0)
 					{
-						BroadcastPlayerHand(m_seats[i].pPlayer);
-
 						if (handStrength >= bestHand)
 						{
 							BroadcastF("%s shows %s.", m_seats[i].pPlayer->name.c_str(), stringResult.c_str());
+							BroadcastPlayerHand(m_seats[i].pPlayer);
 							vWinners.push_back(m_seats[i].pPlayer);
 						}
 						else
+						{
 							BroadcastF("%s mucks [%s] [%s]", 
 								m_seats[i].pPlayer->name.c_str(), 
 								m_cardDeck.getCardName(m_seats[i].pPlayer->cards[0]).c_str(),
 								m_cardDeck.getCardName(m_seats[i].pPlayer->cards[1]).c_str());
+							
+							g_gameFloor.BroadcastPacket(m_gameBuffer, PackOpcode(m_gameBuffer, OPCODE_HAND_MUCK));
+						}
 					}
 					else
 					{
