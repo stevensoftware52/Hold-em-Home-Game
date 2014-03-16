@@ -419,16 +419,14 @@ void Game::AwardWinners()
 	// Scoop up any folded bets
 
 	PENNY totalBetsOutThere = 0;
-		
+	
+	ScoopUpBets();
+
 	for (uint8 i = 0; i < NUM_SEATS; ++i)
 	{
 		// Anyone with a holding is a potential winner
 		if (m_seats[i].pPlayer && playerHasHolding(m_seats[i].pPlayer))
-		{
-			totalBetsOutThere += m_seats[i].pPlayer->penBet;
-			m_seats[i].pPlayer->penBet = 0;
 			vWinners.push_back(m_seats[i].pPlayer);
-		}
 	}
 	
 	m_penPot += totalBetsOutThere;
