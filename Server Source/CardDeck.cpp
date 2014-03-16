@@ -331,11 +331,28 @@ unsigned int CardDeck::CalculateHandStrength(std::vector<Card> cards, std::strin
 			// A four of kind
 			if (vNumOfEachValue[i] == 4)
 			{
-				// See if this hand is best hand
-				uiResult = max(uiResult, FOUR_OF_KIND + (15 * i));
+				std::vector<uint8> possibleKickers;
 
-				sprintf_s(buffer, "Four of a kind, %s's", 
-					g_valueNames[i].c_str());
+				// Deduce a kicker
+				for (uint8 c = 0; c < cards.size(); ++c)
+					if (cards[c].uiValue != i)
+						possibleKickers.push_back(cards[c].uiValue);
+
+				// Kicker is highest 
+				auto itr = std::max_element(possibleKickers.begin(), possibleKickers.end());
+
+				#define FOUR_OF_KIND_FORMULA FOUR_OF_KIND + (15 * i) + *itr
+
+				// See if this hand is best hand
+				uiResult = max(uiResult, FOUR_OF_KIND_FORMULA);
+
+				// If this is the best hand
+				if (uiResult == FOUR_OF_KIND_FORMULA)
+				{
+					sprintf_s(buffer, "Four of a kind, %s's, %s kicker", 
+						g_valueNames[i].c_str(),
+						g_valueNames[*itr].c_str());
+				}
 			}
 		}
 
