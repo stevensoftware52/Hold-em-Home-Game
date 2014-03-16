@@ -150,6 +150,7 @@ class TableRender : InputBox
 		void AddBoardCard(ClientCard* pCard);
 		void ToggleMusic(bool bOn);
 		void RenderChipStack(float amount, uint8 seat);
+		void SetMsg(std::string msg);
 
 		void setPot(float pot) { m_pot = pot; }
 		void setDealerSeat(uint8 seat) { m_dealerSeat = seat; }
@@ -166,6 +167,7 @@ class TableRender : InputBox
 
 		uint8 getDealerSeat() const { return m_dealerSeat; }
 
+		Slider* getSlider() const { return m_slider; }
 
 		Player* GetPlayer(unsigned int guid) const;
 

@@ -276,16 +276,19 @@ void TcpClient::ReceiveHandOpcode(char* buffer, uint8 opcode)
 				}
 			}
 
-			g_tableRender.setMsg("0.02");
+			g_tableRender.SetMsg("0.02");
 
 			break;
 		}
 		case OPCODE_HAND_NEWCARD:	
 			playsound = "card.wav";
+
 			g_gameInfo.m_cardAnimations.vBoard = g_tableRender.getBoard();
 			g_gameInfo.m_cardAnimations.vCardAnimations.clear();
 			g_gameInfo.m_cardAnimations.vCardAnimations.push_back(CardAnimation(dealerPosition, 0.00f, Vector2(TABLE_CENTER_X, TABLE_CENTER_Y)));
-			g_tableRender.setMsg("0.02");
+			
+			g_tableRender.SetMsg("0.02");
+			
 			break;
 
 		case OPCODE_HAND_FLOP:
@@ -295,6 +298,8 @@ void TcpClient::ReceiveHandOpcode(char* buffer, uint8 opcode)
 			g_gameInfo.m_cardAnimations.vCardAnimations.push_back(CardAnimation(dealerPosition, 0.0f, Vector2(TABLE_CENTER_X, TABLE_CENTER_Y)));
 			g_gameInfo.m_cardAnimations.vCardAnimations.push_back(CardAnimation(dealerPosition, 0.1f, Vector2(TABLE_CENTER_X, TABLE_CENTER_Y)));
 			g_gameInfo.m_cardAnimations.vCardAnimations.push_back(CardAnimation(dealerPosition, 0.2f, Vector2(TABLE_CENTER_X, TABLE_CENTER_Y)));
+			
+			g_tableRender.SetMsg("0.02");
 			break;
 
 		case OPCODE_HAND_TIMEBANK:

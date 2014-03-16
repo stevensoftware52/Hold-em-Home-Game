@@ -276,6 +276,14 @@ float TableRender::NetPot() const
 	return result + m_pot;
 }
 
+// ------------
+// SetMsg
+void TableRender::SetMsg(std::string msg)
+{ 
+	m_typedMsg = msg;
+	getSlider()->setNumber(float(atof(msg.c_str())));
+}
+
 // -----------------
 // RenderChipStack
 //		If seat is >= MAX_PLAYERS then it's rendering the pot

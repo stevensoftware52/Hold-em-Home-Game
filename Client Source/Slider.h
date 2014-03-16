@@ -47,9 +47,14 @@ class Slider
 
 		void Input();
 		void Render();
-		void SetNumber(float fNumber);
 		void ConstrictNumber(float& fNumber);
 		
+		void setNumber(float fNumber)
+		{
+			m_fCurrentNumber = fNumber;
+			ConstrictNumber(m_fCurrentNumber);
+		}
+
 		float GetMinValue() const;
 		float GetMaxValue() const;
 
