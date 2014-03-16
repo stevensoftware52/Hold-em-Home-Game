@@ -41,12 +41,24 @@ void Session::ReceiveChatMsg(char* data, unsigned int size)
 
 	// Chat commands
 	//
+	
+	if (Player* pPlayer = g_gameFloor.getGame()->getPlayer(m_accountId))
+	{
+		if (msg.find("/taunt") == 0)
+			g_gameFloor.BroadcastPacket(buffer, BuildSendTaunt(buffer));
+	
+		if (msg.find("/music") == 0)
+			g_gameFloor.BroadcastPacket(buffer, g_gameFloor.getGame()->PackOpcode(buffer, OPCODE_PLAYER_PLAYMUSIC));
 
-	if (msg.find("/taunt") != std::string::npos)
-		g_gameFloor.BroadcastPacket(buffer, BuildSendTaunt(buffer));
+		if (msg.find("/avatar") == 0)
+		{
+			for (uint8 i = 0; i < strlen("/avatar"); ++i)
+				msg.erase(msg.begin());
 
-	if (msg.find("/music") != std::string::npos)
-		g_gameFloor.BroadcastPacket(buffer, g_gameFloor.getGame()->PackOpcode(buffer, OPCODE_PLAYER_PLAYMUSIC));
+			m_uiAvatar = atoi(msg.c_str());		
+			Session::SaveAccount(pPlayer->name, m_uiAvatar, 0);
+		}
+	}
 }
 
 // ----------------------

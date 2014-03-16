@@ -12,6 +12,8 @@ Game::Game(PENNY bigBlind, PENNY smallBlind)
 	m_penSmallBlind = smallBlind;
 
 	m_uiUniqueHandCount = 0;
+
+	//AddPlayer("Computer1", 1, MAX_BUYIN);
 }
 
 // ----------
@@ -1290,71 +1292,17 @@ void Game::BroadcastPlayerHand(Player* pPlayer)
 
 // --------------------------
 // AffectBankroll
-void Game::AffectBankroll(Player* pPlayer, PENNY penNumPennies)
+//		'penBankrollChange' is how much to affect the banroll by, positive or negative acceptable
+void Game::AffectBankroll(Player* pPlayer, PENNY penBankrollChange)
 {
+	uint8 uiAvatar = 0;
+
 	// Update in memory
 	if (Session* pSession = g_gameFloor.GetSession(pPlayer->accountId))
-		pSession->affectBankroll(penNumPennies);
-	
-	unsigned int uiResult = 0;
-
-	char filename[256];
-	sprintf_s(filename, "Users\\%s.txt", pPlayer->name.c_str());
-		
-	ifstream myfile(filename);
-
-	std::vector<string> userInformation;
-
-	// Update in disk
-	//
-
-	// Read file contents
-	if (myfile.is_open())
 	{
-		std::string line;
-
-		while (getline (myfile, line))
-		{
-			userInformation.push_back(line);
-
-			if (userInformation.size() >= NUM_USERFILE_CONTENTS)
-				break;
-		}
-
-		// Check data
-		if (userInformation.size() != NUM_USERFILE_CONTENTS)
-			printf("Unexpected end of user contents\n");
-		
-		// Data is good, go for the gold
-		else
-		{
-			// Modify bankroll
-			float fBankroll = (float)atof(userInformation[2].c_str());
-			fBankroll += PENNY_F(penNumPennies);			
-			userInformation[2] = std::to_string(fBankroll);
-		}
-
-		myfile.close();
+		uiAvatar = pSession->getAvatar();
+		pSession->affectBankroll(penBankrollChange);
 	}
 
-	// Overwrite file contents
-	if (userInformation.size() == NUM_USERFILE_CONTENTS)
-	{
-		ofstream filestr;
-
-		{
-			filestr.open(filename, fstream::in | fstream::out | ios::trunc);
-
-			if (filestr.is_open())
-			{
-				filestr << userInformation[0] << '\n' << userInformation[1] << '\n' << userInformation[2] << '\n' << userInformation[3];
-				filestr.close();
-			}
-			else
-			{
-				printf("CRASH: User's file corrupted!!\n");
-				assert(0);
-			}
-		}
-	}
+	Session::SaveAccount(pPlayer->name, uiAvatar, penBankrollChange);
 }

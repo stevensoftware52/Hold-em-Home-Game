@@ -13,8 +13,6 @@ GameInfo g_gameInfo;
 
 int _tmain(int argc, _TCHAR* argv[])
 {		
-	FreeConsole();
-
 	string line;
 	ifstream myfile ("Content\\Console Logo.txt");
 

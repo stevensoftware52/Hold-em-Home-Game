@@ -37,6 +37,7 @@ void HgeClient::Begin()
 			if (m_hge->System_Initiate())
 			{
 				LoadAllContent();
+				ShowWindow(GetConsoleWindow(), SW_HIDE);
 				m_hge->System_Start();
 			}
 		

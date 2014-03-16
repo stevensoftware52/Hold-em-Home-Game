@@ -47,6 +47,8 @@ class Session
         void RespondToMessage(char *data, unsigned int size);
         void SendMessageTo(unsigned int size, char *data);
 		
+		static void SaveAccount(std::string name, uint8 uiAvatar, PENNY penBankRollChange);
+
 		void affectBankroll(PENNY amount) { m_penBankroll += amount; }
 
 		// Game stuff
