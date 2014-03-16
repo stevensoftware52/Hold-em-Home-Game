@@ -33,7 +33,8 @@ void HgeClient::Begin()
 			m_hge->System_SetState(HGE_SCREENBPP, 32);
 			m_hge->System_SetState(HGE_FPS, 144);
 			m_hge->System_SetState(HGE_SHOWSPLASH, false);
-
+			m_hge->System_SetState(HGE_ICON, MAKEINTRESOURCE(101));
+			
 			if (m_hge->System_Initiate())
 			{
 				LoadAllContent();
