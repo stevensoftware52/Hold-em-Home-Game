@@ -963,7 +963,8 @@ std::vector<std::string> Game::DeducePossibleDecisions(Player* pPlayer)
 
 	// Show hand option if hand is over
 	if (NumPlayersWithHolding() == 1 || m_uiCurrentStage >= SHOWDOWN)
-		result.push_back("Show Hand");
+		if (playerHasHolding(pPlayer))
+			result.push_back("Show Hand");
 
 	// Always the choice to leave
 	result.push_back("Sit Out");
@@ -1254,8 +1255,16 @@ void Game::Progress()
 		if (NumPlayersWithStack(true, true) <= 1)
 		{
 			for (uint8 i = 0; i < NUM_SEATS; ++i)
+			{
 				if (m_seats[i].pPlayer)
+				{
 					m_seats[i].pPlayer->bNeedToAct = false;
+					
+					// Show cards if skipping to showdown
+					if (playerHasHolding(m_seats[i].pPlayer))
+						BroadcastPlayerHand(m_seats[i].pPlayer);
+				}
+			}
 
 			m_bSkipToShowdown = true;
 			return;
