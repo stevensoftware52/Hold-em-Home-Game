@@ -27,11 +27,11 @@ ChatBox::~ChatBox()
 void ChatBox::Input()
 {
 	// Scroll up button
-	if (m_buttons[CBUTTON_SCROLL_UP]->ButtonPressed() && m_messages.size() > CHATBOX_MAX_PRINTED_MSG)
+	if ((_hge->Input_GetMouseWheel() == 1 || m_buttons[CBUTTON_SCROLL_UP]->ButtonPressed()) && m_messages.size() > CHATBOX_MAX_PRINTED_MSG)
 		m_uiScrollOffset = min(m_uiScrollOffset + 1, m_messages.size() - CHATBOX_MAX_PRINTED_MSG);
 	
 	// Scroll down button
-	if (m_buttons[CBUTTON_SCROLL_DOWN]->ButtonPressed() && m_uiScrollOffset >= 1)
+	if (( _hge->Input_GetMouseWheel() == -1 || m_buttons[CBUTTON_SCROLL_DOWN]->ButtonPressed()) && m_uiScrollOffset >= 1)
 		--m_uiScrollOffset;
 	
 	// Scroll down "all the way" button   
