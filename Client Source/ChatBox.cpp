@@ -7,14 +7,37 @@ ChatBox::ChatBox() :
 {
 	m_boxWidth = 0;
 	m_boxHeight = 0;
-
 	m_uiScrollOffset = 0;
+			
+	m_buttons[CBUTTON_SCROLL_UP] = new Button(Vector2(CHATBOX_RENDER_X, CHATBOX_RENDER_Y - 148.0f), Vector2(CHATBOX_RENDER_X + 27.0f, CHATBOX_RENDER_Y - 123.0f));
+	m_buttons[CBUTTON_SCROLL_DOWN] = new Button(Vector2(CHATBOX_RENDER_X, CHATBOX_RENDER_Y - 120.0f), Vector2(CHATBOX_RENDER_X + 27.0f, CHATBOX_RENDER_Y - 96.0f));
+	m_buttons[CBUTTON_SCROLL_DOWNX] = new Button(Vector2(CHATBOX_RENDER_X, CHATBOX_RENDER_Y - 55.0f), Vector2(CHATBOX_RENDER_X + 27.0f, CHATBOX_RENDER_Y - 30.0f));
+}
+
+// -----------------
+// Destructor
+ChatBox::~ChatBox()
+{
+	for (uint8 i = 0; i < NUM_CHATBOX_BUTTONS; ++i)
+		delete m_buttons[i];
 }
 
 // -----------------
 // Input
 void ChatBox::Input()
 {
+	// Scroll up button
+	if (m_buttons[CBUTTON_SCROLL_UP]->ButtonPressed() && m_messages.size() > CHATBOX_MAX_PRINTED_MSG)
+		m_uiScrollOffset = min(m_uiScrollOffset + 1, m_messages.size() - CHATBOX_MAX_PRINTED_MSG);
+	
+	// Scroll down button
+	if (m_buttons[CBUTTON_SCROLL_DOWN]->ButtonPressed() && m_uiScrollOffset >= 1)
+		--m_uiScrollOffset;
+	
+	// Scroll down "all the way" button   
+	if (m_buttons[CBUTTON_SCROLL_DOWNX]->ButtonPressed())
+		m_uiScrollOffset = 0;
+
 	// If click on chat box, it's now inputting
 	if (CursorInBounds() && _hge->Input_GetKey() == HGEK_LBUTTON)
 		g_hgeClient.changeInputBox(this);
@@ -71,7 +94,7 @@ void ChatBox::Render()
 
 			++count;
 
-			if (count >= 7)
+			if (count >= CHATBOX_MAX_PRINTED_MSG)
 				break;
 		}
 	}

@@ -12,8 +12,12 @@ Game::Game(PENNY bigBlind, PENNY smallBlind)
 	m_penSmallBlind = smallBlind;
 
 	m_uiUniqueHandCount = 0;
-
-	//AddPlayer("Computer1", 1, MAX_BUYIN);
+	
+	AddPlayer("Computer1", 1, MAX_BUYIN);
+	AddPlayer("Computer2", 2, MAX_BUYIN);
+	AddPlayer("Computer3", 3, MAX_BUYIN);
+	AddPlayer("Computer4", 4, MAX_BUYIN);
+	AddPlayer("Computer5", 5, MAX_BUYIN);
 }
 
 // ----------
