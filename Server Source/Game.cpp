@@ -961,6 +961,10 @@ std::vector<std::string> Game::DeducePossibleDecisions(Player* pPlayer)
 
 	std::vector<std::string> result;
 
+	// Show hand option if hand is over
+	if (NumPlayersWithHolding() == 1 || m_uiCurrentStage >= SHOWDOWN)
+		result.push_back("Show Hand");
+
 	// Always the choice to leave
 	result.push_back("Sit Out");
 
@@ -1090,6 +1094,12 @@ void Game::ProcessPlayerDecision(unsigned int accountId, std::string decision, f
 
 		return;
 	}
+	
+	if (decision == "Show Hand")
+	{
+		if (playerHasHolding(pPlayer))
+			BroadcastPlayerHand(pPlayer);
+	}
 
 	if (find(pPlayer->vDecisionChoices.begin(), pPlayer->vDecisionChoices.end(), decision) == pPlayer->vDecisionChoices.end())
 	{
@@ -1105,7 +1115,7 @@ void Game::ProcessPlayerDecision(unsigned int accountId, std::string decision, f
 
 	// Process decision
 	//
-	
+
 	if (decision == "Fold")
 	{
 		pPlayer->bNeedToAct = false;

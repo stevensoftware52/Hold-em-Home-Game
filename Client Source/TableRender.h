@@ -100,7 +100,7 @@ static float g_posPosRelative[2] = { 0.0f, -0.15f };
 // Buttons
 //
 
-#define NUM_BUTTONS 7
+#define NUM_BUTTONS 8
 
 static const char* g_buttonTitles[NUM_BUTTONS] = 
 {
@@ -111,6 +111,7 @@ static const char* g_buttonTitles[NUM_BUTTONS] =
 	"Call",
 	"Check",
 	"Fold",
+	"Show Hand"
 };
 
 // Anchor position of buttons
