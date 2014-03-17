@@ -312,18 +312,15 @@ void TableRender::RenderChipStack(float amount, uint8 seat, Vector2 renderOverri
 	//
 	
 	Vector2 originPos;
-
-	if (bIsThePot)
+	
+	if (renderOverride.x)
+		originPos = renderOverride;
+	else if (bIsThePot)
 		originPos = POT_RENDER_V;
 	else
 		originPos = BET_RENDER_V(seat);
 
 	Vector2 renderPos = originPos;
-
-	// Use renderOverride if exists
-
-	if (renderOverride.x)
-		renderPos = renderOverride;
 	
 	float chipVisualSize = 0.0f;
 
