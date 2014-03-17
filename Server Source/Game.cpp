@@ -12,8 +12,10 @@ Game::Game(PENNY bigBlind, PENNY smallBlind)
 	m_penSmallBlind = smallBlind;
 
 	m_uiUniqueHandCount = 0;
-
+	
 	//AddPlayer("Computer1", 1, MAX_BUYIN);
+	//AddPlayer("Computer2", 2, MAX_BUYIN);
+	//AddPlayer("Computer3", 3, MAX_BUYIN);
 }
 
 // ----------
@@ -215,7 +217,19 @@ void Game::EndHand()
 	{
 		if (m_seats[i].pPlayer)
 		{
+			// Remove if offline
+
+			Session* pSession = g_gameFloor.GetSession(m_seats[i].pPlayer->accountId);
+
+			if (!pSession && m_seats[i].pPlayer->accountId > AI_GUID_MAX)
+			{
+				delete m_seats[i].pPlayer;
+				m_seats[i].pPlayer = 0;
+				continue;
+			}
+
 			// Affect bankroll by this much
+
 			if (m_seats[i].pPlayer->penStack != m_seats[i].pPlayer->penStackBeforeHand)
 			{
 				int diff = m_seats[i].pPlayer->penStack - m_seats[i].pPlayer->penStackBeforeHand;
@@ -283,12 +297,15 @@ void Game::ResetGame()
 			m_seats[i].pPlayer->cards[1].uiSuit = 0;
 			m_seats[i].pPlayer->cards[1].uiValue = 0;
 
-			/*if (m_seats[i].pPlayer->accountId > AI_GUID_MAX)
-			{
-				Session* pSession = g_gameFloor.GetSession(m_seats[i].pPlayer->accountId);
+			// Remove if offline
 
-				if (!pSession)
-			}*/
+			Session* pSession = g_gameFloor.GetSession(m_seats[i].pPlayer->accountId);
+
+			if (!pSession && m_seats[i].pPlayer->accountId > AI_GUID_MAX)
+			{
+				delete m_seats[i].pPlayer;
+				m_seats[i].pPlayer = 0;
+			}
 		}
 	}
 }
@@ -383,7 +400,7 @@ void Game::RemovePlayer(unsigned int accountId)
 	{
 		if (m_seats[i].pPlayer && m_seats[i].pPlayer->accountId == accountId)
 		{
-			if (m_seats[i].pPlayer->penStackBeforeHand)
+			if (playerHasHolding(m_seats[i].pPlayer) || m_seats[i].pPlayer->penBet)
 				return;
 
 			delete m_seats[i].pPlayer;
@@ -713,9 +730,19 @@ void Game::RotateBlinds()
 	// Loop until found valid player to post small blind
 	//
 
+	int max_loops = 0;
+
 	for (int i = (int)m_uiBigBlindSeat - 1; true; --i)
 	{		
 		int thisSeat = i;
+
+		++max_loops;
+
+		if (max_loops > NUM_SEATS)
+		{
+			ResetGame();
+			return;
+		}
 
 		NormalizeSeatNumber(thisSeat);
 		
@@ -1056,10 +1083,10 @@ void Game::ProcessPlayerDecision(unsigned int accountId, std::string decision, f
 
 	if (decision == "Sit Out")
 	{
-		if (pPlayer->penStackBeforeHand)
+		if (playerHasHolding(pPlayer) || pPlayer->penBet)
 			SendF(accountId, "You can't sit out while you're in a hand.");
 		else
-			RemovePlayer(accountId);
+			RemovePlayer(pPlayer->accountId);
 
 		return;
 	}
@@ -1120,11 +1147,13 @@ void Game::ProcessPlayerDecision(unsigned int accountId, std::string decision, f
 
 	if (decision == "Bet/Raise")
 	{
-		if (!penAmount)
-		{
-			SendF(accountId, "Please enter an amount.");
-			return;
-		}
+		penAmount -= pPlayer->penBet;
+
+		//if (!penAmount)
+		//{
+		//	SendF(accountId, "Please enter an amount.");
+		//	return;
+		//}
 
 		if (penAmount > pPlayer->penStack)
 		{
@@ -1132,7 +1161,7 @@ void Game::ProcessPlayerDecision(unsigned int accountId, std::string decision, f
 			return;
 		}
 
-		if (penAmount < LargestBetOutThere() + (LargestBetOutThere() - pPlayer->penBet))
+		if (penAmount + pPlayer->penBet < LargestBetOutThere() * 2)
 		{
 			SendF(accountId, "The minimum is $%.2f.", PENNY_F(LargestBetOutThere() + (LargestBetOutThere() - pPlayer->penBet)));
 			return;
