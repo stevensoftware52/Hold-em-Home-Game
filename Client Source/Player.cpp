@@ -120,9 +120,22 @@ void Player::RenderLabel()
 		if (hgeFont* pFont = g_hgeClient.font("tahoma13b.fnt"))
 		{
 			// Name
-			pFont->printf(Util::round(labelPos.x), Util::round(labelPos.y - 15.0f - (pFont->GetHeight() / 2.0f)), HGETEXT_CENTER, "%s", m_name.c_str());
+			//
+			
+			// Show timebank as "gummy52 (3)" (example)
+
+			char nameStr[24];
+
+			if (m_decisionTime <= 0 && m_uiInHand)
+				sprintf_s(nameStr, "%s (%d)", m_name.c_str(), m_timeBank);
+			else
+				sprintf_s(nameStr, "%s", m_name.c_str());
+
+			pFont->printf(Util::round(labelPos.x), Util::round(labelPos.y - 15.0f - (pFont->GetHeight() / 2.0f)), HGETEXT_CENTER, "%s", nameStr);
 
 			// Money
+			//
+
 			pFont->printf(Util::round(labelPos.x), Util::round(labelPos.y + 15.0f - (pFont->GetHeight() / 2.0f)), HGETEXT_CENTER, "$%.2f", m_money);
 		}
 	}
