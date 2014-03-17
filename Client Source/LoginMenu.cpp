@@ -36,7 +36,7 @@ void LoginMenu::Input()
 	}
 
 	// If the login button is pressed
-	if (m_loginButton->ButtonPressed())
+	if (m_loginButton->ButtonPressed() || _hge->Input_GetKey() == HGEK_ENTER)
 	{
 		PressedEnter();
 	}
