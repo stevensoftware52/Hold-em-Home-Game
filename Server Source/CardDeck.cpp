@@ -405,8 +405,8 @@ unsigned int CardDeck::CalculateHandStrength(std::vector<Card> cards, std::strin
 			if (uiResult == thisValue)
 			{
 				sprintf_s(buffer, "%s's full of %s's", 
-						g_valueNames[*bestPair].c_str(),
-						g_valueNames[*bestThreeOfKind].c_str());
+						g_valueNames[*bestThreeOfKind].c_str(),
+						g_valueNames[*bestPair].c_str());
 			}
 		}
 
