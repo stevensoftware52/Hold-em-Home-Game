@@ -330,7 +330,7 @@ void TcpClient::ReceivePlayerTaunt(char* data, unsigned int size)
 	if (Player* pPlayer = g_tableRender.GetPlayer(playerGUID))
 	{
 		char filename[256];
-		sprintf_s(filename, "%d.wav", pPlayer->getAvatar());
+		sprintf_s(filename, "//%d.wav", pPlayer->getAvatar());
 		g_hgeClient.ToggleSound(filename, true, 25);
 	}
 }
