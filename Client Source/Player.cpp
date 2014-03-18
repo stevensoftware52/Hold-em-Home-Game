@@ -96,7 +96,7 @@ void Player::Render()
 			CENTER_SPRITE_HOTSPOT(pHolding);
 
 			for (uint8 i = 0; i < m_uiInHand; ++i)
-				pHolding->Render(renderPos.x + ((float)i * offset), renderPos.y - ((float)i * offset));
+				pHolding->RenderEx(renderPos.x + ((float)i * offset), renderPos.y - ((float)i * offset), 0, scale, scale);
 		}
 	}
 }
@@ -155,12 +155,14 @@ void Player::RenderClientCards()
 			if (hgeSprite* pSprite = m_myCards[i]->Sprite())
 			{
 				CENTER_SPRITE_HOTSPOT(pSprite);
+				
+				pSprite->Render(PLAYER_RENDER_X(m_uiSeat) + xOffset, PLAYER_RENDER_Y(m_uiSeat));
 
-				float scale = CARD_RENDER_SCALE(pSprite);
+				//float scale = CARD_RENDER_SCALE(pSprite);
+				//pSprite->RenderEx(PLAYER_RENDER_X(m_uiSeat) + xOffset, PLAYER_RENDER_Y(m_uiSeat), 0.0f, scale, scale);
+				//xOffset += (pSprite->GetWidth() * scale) * 0.5f;
 
-				pSprite->RenderEx(PLAYER_RENDER_X(m_uiSeat) + xOffset, PLAYER_RENDER_Y(m_uiSeat), 0.0f, scale, scale);
-
-				xOffset += (pSprite->GetWidth() * scale) * 0.5f;
+				xOffset += floor(pSprite->GetWidth() * 0.5f);
 			}
 		}
 	}

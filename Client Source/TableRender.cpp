@@ -72,11 +72,12 @@ void TableRender::Render()
 		{
 			CENTER_SPRITE_HOTSPOT(pSprite);
 
-			float cardSize = CARD_RENDERED_SIZE(pSprite);			
+			float cardSize = CARD_RENDERED_SIZE(pSprite) * 1.05f;			
 			float renderX = TABLE_CENTER_X - ((cardSize / 2.0f) * m_board.size()) + (cardSize * i) + (cardSize / 2.0f);
 			float renderY = TABLE_CENTER_Y;
 
-			pSprite->RenderEx(renderX, renderY, 0.0f, CARD_RENDER_SCALE(pSprite), CARD_RENDER_SCALE(pSprite));
+			pSprite->Render(floor(renderX), floor(renderY));
+			//pSprite->RenderEx(renderX, renderY, 0.0f, CARD_RENDER_SCALE(pSprite), CARD_RENDER_SCALE(pSprite));
 		}
 	}
 
@@ -294,6 +295,8 @@ void TableRender::RenderChipStack(float amount, uint8 seat, Vector2 renderOverri
 
 	std::vector<Chip> chips;
 
+	amount += 0.001f;
+
 	// Grab from the biggest chip until we can't grab that anymore, then go down in size, repeat, etc
 	while (amount >= 0.01f)
 	{
@@ -372,8 +375,7 @@ void TableRender::RenderChipStack(float amount, uint8 seat, Vector2 renderOverri
 	{
 		printX = originPos.x;
 		printY = originPos.y - ((chipVisualSize * BET_CHIP_Y_SCALE) * MAX_CHIP_C_STACK * 4.0f); // * 1.25;
-
-		betAmount = NetPot();
+		//betAmount = NetPot();
 	}
 
 	// Otherwise, rRender the amount next to it
@@ -390,7 +392,19 @@ void TableRender::RenderChipStack(float amount, uint8 seat, Vector2 renderOverri
 		if (bYSub)
 			printY -= pFont->GetHeight() * 2.0f;
 
-		pFont->printf(Util::round(printX), Util::round(printY), bIsThePot ? HGETEXT_CENTER : bXAdd ? HGETEXT_LEFT : HGETEXT_RIGHT, "$%.2f", betAmount);
+		if (bIsThePot)
+		{
+			float bets = NetPot() - betAmount;
+
+			if (betAmount && bets >= 0.01f)
+				pFont->printf(Util::round(printX), Util::round(printY), HGETEXT_CENTER, "$%.2f ($%.2f)", betAmount, NetPot() - betAmount);
+			else if (betAmount)
+				pFont->printf(Util::round(printX), Util::round(printY), HGETEXT_CENTER, "$%.2f", betAmount);
+			else
+				pFont->printf(Util::round(printX), Util::round(printY), HGETEXT_CENTER, "$%.2f", NetPot());
+		}
+		else
+			pFont->printf(Util::round(printX), Util::round(printY), bXAdd ? HGETEXT_LEFT : HGETEXT_RIGHT, "$%.2f", betAmount);
 	}
 }
 

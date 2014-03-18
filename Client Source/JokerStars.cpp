@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 
-HgeClient g_hgeClient(1080, 800);
+HgeClient g_hgeClient(1053, 780);
 TableRender g_tableRender;
 ChatBox g_chatBox;
 CardLibrary g_cardLibrary;

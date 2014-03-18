@@ -58,7 +58,7 @@ void LoginMenu::Render()
 	if (hgeSprite* pLoginMenu = g_hgeClient.sprite("login_menu.png"))
 	{
 		CENTER_SPRITE_HOTSPOT(pLoginMenu);
-		pLoginMenu->Render(SCREEN_C_X, SCREEN_C_Y);
+		pLoginMenu->Render(floor(SCREEN_C_X), floor(SCREEN_C_Y));
 	}
 
 

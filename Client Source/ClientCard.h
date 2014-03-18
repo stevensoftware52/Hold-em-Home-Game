@@ -4,10 +4,10 @@
 #include "stdafx.h"
 
 // Scale of a rendered card
-#define CARD_RENDER_SCALE(a) ((124.0f / a->GetWidth()) * g_tableRender.getTableScale())
+//#define CARD_RENDER_SCALE(a) ((124.0f / a->GetWidth()) * g_tableRender.getTableScale())
 
 // Size of a rendered card
-#define CARD_RENDERED_SIZE(a) (a->GetWidth() * CARD_RENDER_SCALE(a))
+#define CARD_RENDERED_SIZE(a) a->GetWidth() //(a->GetWidth() * CARD_RENDER_SCALE(a))
 
 class ClientCard
 {

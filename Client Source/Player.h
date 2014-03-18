@@ -51,7 +51,7 @@ static float g_holdingPosRelative[MAX_PLAYERS][2] =
 #define HOLDING_RENDER_V(a) Vector2(HOLDING_RENDER_X(a), HOLDING_RENDER_Y(a))
 
 // Formula to deduce scale of dealer button icon
-#define HOLDING_ICON_SCALE(a) ((64.0f / a->GetWidth()) * g_tableRender.getTableScale())
+#define HOLDING_ICON_SCALE(a) ((75.0f / a->GetWidth()) * g_tableRender.getTableScale())
 
 // Formula to deduce the render offset for the second card of a holding, w is the visible width of the card after scale has been considered
 #define HOLDING_R_OFFSET(w) ((float)(int)(w * 0.15625f))
