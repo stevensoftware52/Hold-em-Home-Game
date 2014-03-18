@@ -13,7 +13,7 @@ CardDeck::CardDeck()
 		Shuffle();
 
 		std::vector<Card> cards;
-
+				
 		for (unsigned int i = 0; i < 7; ++i)
 			cards.push_back(DrawCard());
 
@@ -359,10 +359,27 @@ unsigned int CardDeck::CalculateHandStrength(std::vector<Card> cards, std::strin
 		// Check for two pairs
 		if (vPairs.size() >= 2)
 		{
-			auto itrMax = std::max_element(vPairs.begin(), vPairs.end());
-			auto itrMin = std::min_element(vPairs.begin(), vPairs.end());
-		
-			#define TWO_PAIR_FORMULA TWO_PAIR + (15 * (*itrMax)) + *itrMin
+			int bestPair = 0;
+			int nextBestPair = 0;
+
+			// Copy pairs so we can erase to grab top two pairs
+
+			std::vector<uint8> vPairsCopy = vPairs;
+
+			// Top pair
+			{
+				auto itrMax = std::max_element(vPairsCopy.begin(), vPairsCopy.end());
+				bestPair = *itrMax;
+				vPairsCopy.erase(itrMax);
+			}
+
+			// Next top pair
+			{
+				auto itrMax = std::max_element(vPairsCopy.begin(), vPairsCopy.end());
+				nextBestPair =  *itrMax;
+			}
+
+			#define TWO_PAIR_FORMULA TWO_PAIR + (15 * (bestPair)) + nextBestPair
 
 			// See if this hand is best hand
 			uiResult = max(uiResult, TWO_PAIR_FORMULA);
@@ -384,8 +401,8 @@ unsigned int CardDeck::CalculateHandStrength(std::vector<Card> cards, std::strin
 				uiResult += *itr;
 
 				sprintf_s(buffer, "%s's and %s's, %s kicker", 
-					g_valueNames[vPairs[0]].c_str(),
-					g_valueNames[vPairs[1]].c_str(),
+					g_valueNames[bestPair].c_str(),
+					g_valueNames[nextBestPair].c_str(),
 					g_valueNames[*itr].c_str());
 			}
 		}
