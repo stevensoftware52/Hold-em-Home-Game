@@ -1323,7 +1323,7 @@ void Game::ProgressToRiver()
 	
 	m_uiCurrentStage = RIVER;
 
-	BroadcastF("*** TURN *** [%s %s %s %s] [%s]", 
+	BroadcastF("*** RIVER *** [%s %s %s %s] [%s]", 
 		m_cardDeck.getCardName(m_board[0]).c_str(),
 		m_cardDeck.getCardName(m_board[1]).c_str(),
 		m_cardDeck.getCardName(m_board[2]).c_str(),
