@@ -33,6 +33,7 @@ void GameInfo::RenderText()
 
 	if (Player* pPlayer = g_tableRender.GetPlayer(this->m_uiGUID))
 	{
+		myAvatar = pPlayer->getAvatar();
 		timeBank = pPlayer->m_timeBank;
 		decisionTime = pPlayer->m_decisionTime;
 	}
