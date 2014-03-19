@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "..\\stdafx.h"
 
 #define UNPACK_CHECK { if (sizeUnpacked > size) { printf("Unexpected end of packet\n"); } }
 #define UNPACK_UINT32 *(unsigned int *)(data + sizeUnpacked); { sizeUnpacked += sizeof(unsigned int); UNPACK_CHECK }

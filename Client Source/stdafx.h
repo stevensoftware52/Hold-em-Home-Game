@@ -45,18 +45,21 @@ typedef unsigned char uint8;
 **/
 
 #include "Util.h"
-#include "ClientCard.h"
-#include "CardLibrary.h"
-#include "HgeClient.h"
-#include "InputBox.h"
-#include "TableRender.h"
-#include "ChatBox.h"
-#include "Player.h"
-#include "TcpClient.h"
-#include "LoginMenu.h"
-#include "Button.h"
-#include "GameInfo.h"
-#include  "Slider.h"
+
+#include "Game\\ClientCard.h"
+#include "Game\\CardLibrary.h"
+#include "Game\\HgeClient.h"
+#include "Game\\InputBox.h"
+#include "Game\\TableRender.h"
+#include "Game\\ChatBox.h"
+#include "Game\\Player.h"
+
+#include "Networking\\TcpClient.h"
+#include "Networking\\LoginMenu.h"
+
+#include "Game\\Button.h"
+#include "Game\\GameInfo.h"
+#include "Game\\Slider.h"
 
 extern HgeClient g_hgeClient;
 extern TableRender g_tableRender;
