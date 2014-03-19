@@ -104,7 +104,7 @@ void GameInfo::PumpAnimations()
 			if (bPlaySound && (*itr).progress >= 0)
 				g_hgeClient.ToggleSound("pot.wav", true);
 
-			// Done at > 1.0f
+			// Done at X.0f
 
 			if ((*itr).progress > 4.0f)
 			{
