@@ -139,7 +139,9 @@ void TcpClient::AttemptConnection(std::string username, std::string password)
     serverAddr.sin_port = htons(SERVER_PORT);
     serverAddr.sin_addr.s_addr = inet_addr(serverAddrStr.c_str());
 
-	// If the supplied server address wasn't in the form "aaa.bbb.ccc.ddd" it's a hostname, so try to resolve it
+	// Try to resolve hostname if need to
+	//
+
     if (serverAddr.sin_addr.s_addr == INADDR_NONE)
     {
         struct hostent *host = gethostbyname(serverAddrStr.c_str());
@@ -205,8 +207,6 @@ void TcpClient::AttemptConnection(std::string username, std::string password)
 //      Static function
 void TcpClient::RecvThread(LPVOID lpParam)
 {
-    printf("RecvThread begin\n");
-
     SOCKET sSocket = (SOCKET)lpParam;
 
     while (true)
@@ -242,8 +242,6 @@ void TcpClient::RecvThread(LPVOID lpParam)
     }
     
 	g_tcpClient.m_bConnected = false;
-
-    printf("RecvThread end, error: %d\n", WSAGetLastError());
 }
 
 // ---------------
@@ -251,8 +249,6 @@ void TcpClient::RecvThread(LPVOID lpParam)
 //      Static function
 void TcpClient::SendThread(LPVOID lpParam)
 {
-    printf("SendThread begin\n");
-
     SOCKET sSocket = (SOCKET)lpParam;
 
     char* outgoing = 0;
@@ -301,6 +297,4 @@ void TcpClient::SendThread(LPVOID lpParam)
     }
 
     delete [] outgoing;
-
-    printf("SendThread end, error: %d\n", WSAGetLastError());
 }

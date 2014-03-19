@@ -18,7 +18,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	if (myfile.is_open())
 	{
-		while ( getline (myfile,line) )
+		while (getline(myfile, line))
 		{
 			cout << line << '\n';
 		}

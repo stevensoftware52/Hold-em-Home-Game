@@ -246,8 +246,9 @@ void HgeClient::ToggleSound(std::string dir, bool bApply, int VOLUME)
 	}
 }
 
-// -------------------
+// ---------------
 // GetFileList
+//		http://msdn.microsoft.com/en-us/library/windows/desktop/aa365200%28v=vs.85%29.aspx
 void HgeClient::GetFileList(const char *param, std::vector<std::string> &vAllFiles)
 {
 	std::vector<WIN32_FIND_DATA> visibleFiles;
