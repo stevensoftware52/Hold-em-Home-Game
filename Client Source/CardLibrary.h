@@ -3,6 +3,9 @@
 
 #include "stdafx.h"
 
+#define MAX_SUITS 4
+#define MAX_VALUE 13
+
 #define CARD_TEXTURE_NAMING "suit(%d) card(%d).png"
 
 class CardLibrary

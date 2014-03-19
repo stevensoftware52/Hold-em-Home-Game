@@ -45,7 +45,6 @@ typedef unsigned char uint8;
 **/
 
 #include "Util.h"
-#include "CardDeck.h"
 #include "ClientCard.h"
 #include "CardLibrary.h"
 #include "HgeClient.h"
