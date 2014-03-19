@@ -114,27 +114,17 @@ void TcpMgr::StaticListenThread(LPVOID lpParam)
     listen(lsock, 16);
 
     printf("\nTcpMgr listening on port %d\n\n", TCPMGR_LISTEN_PORT);
+		   
+	// Listen
+	//		TODO: Can we check that lsock is still valid now and then?
+	//
 
-    // In a continous loop, wait for incoming clients. Once one
-    // is detected, create a thread and pass the handle off to it.
-
-    //Database *pDB = new Database();
-    
     while (true)
     {
         int addrsize = sizeof(client);
-
-        // accept()
-        //
-
         SOCKET csock = accept(lsock, (struct sockaddr *)&client, &addrsize);
-
-        // INVALID_SOCKET || IsIpBanned()
-        //
-
-        std::string ip = inet_ntoa(client.sin_addr);
-
-        if (csock != INVALID_SOCKET) // && !pDB->IsIpBanned(ip))
+		
+        if (csock != INVALID_SOCKET)
         {       
             int i = 1;
             setsockopt(csock, IPPROTO_TCP, TCP_NODELAY, (char*) &i, sizeof(i));        
@@ -143,9 +133,7 @@ void TcpMgr::StaticListenThread(LPVOID lpParam)
         else
             closesocket(csock);
     }
-
-    //delete pDB;
-
+	
     closesocket(lsock);
 }
 
