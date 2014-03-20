@@ -261,10 +261,10 @@ unsigned int CardDeck::CalculateHandStrength(std::vector<Card> cards, std::strin
 					if (possibleKickers.size() >= 3)
 					{
 						// Grab best 3 kickers
-						for (int v = 2; v >= 0; --v)
+						for (int v = 3; v >= 1; --v)
 						{
 							auto itr = std::max_element(possibleKickers.begin(), possibleKickers.end());
-							kickersValue += *itr + (v * 15);
+							kickersValue += *itr * (v * 100);
 							finalKickers.push_back(*itr);
 							possibleKickers.erase(itr);
 						}
@@ -308,10 +308,10 @@ unsigned int CardDeck::CalculateHandStrength(std::vector<Card> cards, std::strin
 					if (possibleKickers.size() >= 2)
 					{
 						// Grab best 2 kickers
-						for (int v = 1; v >= 0; --v)
+						for (int v = 2; v >= 1; --v)
 						{
 							auto itr = std::max_element(possibleKickers.begin(), possibleKickers.end());
-							kickersValue += *itr + (v * 15);
+							kickersValue += *itr * (v * 100); 
 							finalKickers.push_back(*itr);
 							possibleKickers.erase(itr);
 						}
