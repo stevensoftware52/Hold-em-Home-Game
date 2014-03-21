@@ -18,6 +18,14 @@ struct Card
 	uint8 uiValue;
 };
 
+enum eCards
+{
+	HEARTS = 1,
+	DIAMONDS = 2,
+	CLUBS = 3,
+	SPADES = 4
+};
+
 static std::string g_suitNames[MAX_SUITS + 1] =
 {
 	"ERROR",
