@@ -6,6 +6,17 @@ CardDeck::CardDeck()
 {
 	srand((unsigned int)time(NULL));	
 	Shuffle();
+
+	/*while (true)
+	{
+		Shuffle();
+		std::vector<Card> cards;
+		for (uint8 i = 0; i < 7; ++i)
+			cards.push_back(DrawCard());
+
+		std::string result;
+		CalculateHandStrength(cards, result);
+	}*/
 }
 
 // --------------
@@ -223,7 +234,7 @@ unsigned int CardDeck::CalculateHandStrength(std::vector<Card> cards, std::strin
 			{
 				vPairs.push_back(i);
 
-				#define ONE_PAIR_FORMULA ONE_PAIR + (500 * i)
+				#define ONE_PAIR_FORMULA ONE_PAIR + (50000 * i)
 
 				// See if this hand is best hand
 				uiResult = max(uiResult, ONE_PAIR_FORMULA);
@@ -270,7 +281,7 @@ unsigned int CardDeck::CalculateHandStrength(std::vector<Card> cards, std::strin
 			{
 				vThreeOfKinds.push_back(i);
 
-				#define THREE_OF_KIND_FORMULA THREE_OF_KIND + (500 * i)
+				#define THREE_OF_KIND_FORMULA THREE_OF_KIND + (50000 * i)
 
 				// See if this hand is best hand
 				uiResult = max(uiResult, THREE_OF_KIND_FORMULA);
@@ -446,6 +457,8 @@ unsigned int CardDeck::CalculateHandStrength(std::vector<Card> cards, std::strin
 	//
 
 	stringResult = buffer;
+
+	printf("%s is worth %d\n", stringResult.c_str(), uiResult);
 
 	return uiResult;
 }
