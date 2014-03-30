@@ -205,7 +205,7 @@ unsigned int CardDeck::CalculateHandStrength(std::vector<Card> cards, std::strin
 				for (uint8 v = 0; v < 5; ++v)
 				{
 					auto itr = std::max_element(vNumOfEachSuit[i].begin(), vNumOfEachSuit[i].end());
-					flushValue += *itr;
+					flushValue += pow(*itr, 5 - v);
 					vValues.push_back(*itr);
 					vNumOfEachSuit[i].erase(itr);
 				}
