@@ -32,6 +32,8 @@ TcpMgr::~TcpMgr()
         delete m_vTcpConnections[i];
 
     m_vTcpConnections.clear();
+
+	WSACleanup();
 }
 
 // -----------------
