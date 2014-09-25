@@ -23,6 +23,6 @@ https://github.com/gummy52/Hold-em-Home-Game/tree/master/Binaries
 
 **Preview**
 
-[Video Preview](http://www.mediafire.com/watch/?l2m67wocp197zd1)
+[Video Preview](https://www.youtube.com/watch?v=9Fwmgy4efpg)
 
 ![](http://i.imgur.com/YKWq9fc.png)
